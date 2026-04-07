@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>幸福自在傢俱租賃 — 各職級晉升與薪酬制度</title>
+  <style>
+    :root {
+      --primary: #1a3a5c;
+      --accent: #e8a020;
+      --accent2: #2e7d32;
+      --light: #f5f7fa;
+      --text: #1e2635;
+      --muted: #6b7a8d;
+      --border: #dce3ec;
+      --white: #ffffff;
+      --slide-w: 1200px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Microsoft JhengHei', '微軟正黑體', 'Noto Sans TC', sans-serif;
+      background: #0d1b2e;
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── 頂部工具列 ── */
+    #toolbar {
+      background: #0a1628;
+      border-bottom: 1px solid #1d3256;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 100;
+    }
+    #toolbar .logo {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+    #toolbar .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #toolbar button {
+      background: #1a3456;
+      border: 1px solid #2a4a6c;
+      color: #c8d8e8;
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all .2s;
+    }
+    #toolbar button:hover { background: var(--primary); color: #fff; }
+    #toolbar button:disabled { opacity: .35; cursor: default; }
+    #slide-counter {
+      color: #8fabc8;
+      font-size: 14px;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    /* ── 主舞台 ── */
+    #stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    /* ── 投影片容器 ── */
+    #slides-wrapper {
+      width: 100%;
+      max-width: var(--slide-w);
+      position: relative;
+    }
+    .slide {
+      display: none;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.55);
+      padding: 52px 60px;
+      min-height: 580px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn .35s ease;
+    }
+    .slide.active { display: flex; flex-direction: column; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 頂部色帶 */
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 60%, #f0b840 100%);
+    }
+
+    /* 投影片底部頁碼 */
+    .slide::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: 18px; right: 28px;
+      font-size: 11px;
+      color: #aab8c8;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── 通用元素 ── */
+    .slide-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .slide-tag.gold { background: var(--accent); color: #3a2000; }
+    .slide-tag.green { background: var(--accent2); }
+
+    h1.slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    h2.slide-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    h3.slide-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .slide-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+      width: 60px;
+      margin: 12px 0 24px;
+    }
+
+    /* ── 表格 ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .data-table th {
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 14px;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .data-table th:first-child { border-radius: 6px 0 0 6px; }
+    .data-table th:last-child  { border-radius: 0 6px 6px 0; }
+    .data-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      color: var(--text);
+    }
+    .data-table tr:hover td { background: #f0f5fb; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table .highlight td {
+      background: #fff8e1;
+      font-weight: 600;
+      color: #7a4000;
+    }
+
+    /* ── 資訊卡片 ── */
+    .info-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 4px;
+    }
+    .info-grid.col2 { grid-template-columns: 1fr 1fr; }
+    .info-grid.col3 { grid-template-columns: 1fr 1fr 1fr; }
+    .info-card {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .info-card.gold { border-left-color: var(--accent); }
+    .info-card.green { border-left-color: var(--accent2); }
+    .info-card .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .info-card .card-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .info-card .card-value.gold { color: #b86a00; }
+    .info-card .card-value.green { color: var(--accent2); }
+    .info-card .card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    /* ── 流程步驟 ── */
+    .steps {
+      display: flex;
+      gap: 0;
+      margin: 20px 0;
+      align-items: stretch;
+    }
+    .step {
+      flex: 1;
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+      position: relative;
+    }
+    .step + .step::before {
+      content: '→';
+      position: absolute;
+      left: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .step + .step { margin-left: 24px; }
+    .step .step-num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step .step-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .step .step-body { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── 條列 ── */
+    .bullet-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+    .bullet-list li {
+      padding: 7px 0 7px 20px;
+      position: relative;
+      font-size: 14px;
+      color: var(--text);
+      border-bottom: 1px dashed var(--border);
+      line-height: 1.55;
+    }
+    .bullet-list li:last-child { border-bottom: none; }
+    .bullet-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── 徽章 ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.blue { background: #dbeafe; color: #1d4ed8; }
+    .badge.amber { background: #fef3c7; color: #92400e; }
+    .badge.green { background: #dcfce7; color: #15803d; }
+    .badge.red { background: #fee2e2; color: #b91c1c; }
+
+    /* ── 封面幻燈片 ── */
+    #slide-cover {
+      background: linear-gradient(135deg, #0d2240 0%, #1a3a5c 50%, #0d2240 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 580px;
+    }
+    #slide-cover::before { background: linear-gradient(90deg, var(--accent) 0%, #f0b840 100%); }
+    #slide-cover .cover-logo {
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: #8fabc8;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    #slide-cover h1 {
+      font-size: 38px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    #slide-cover h1 span { color: var(--accent); }
+    #slide-cover .cover-sub {
+      font-size: 16px;
+      color: #a0b4c8;
+      margin-bottom: 40px;
+    }
+    #slide-cover .cover-pills {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #slide-cover .cover-pill {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #c8dcea;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    /* ── 目錄幻燈片 ── */
+    .toc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .toc-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .toc-item:hover { border-color: var(--primary); background: #eef3fa; }
+    .toc-num {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .toc-text .toc-title { font-size: 14px; font-weight: 700; color: var(--primary); }
+    .toc-text .toc-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── 組織架構圖 ── */
+    .org-chart {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+    .org-node {
+      background: var(--primary);
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 10px;
+      text-align: center;
+      min-width: 110px;
+      box-shadow: 0 4px 12px rgba(26,58,92,.3);
+    }
+    .org-node .node-title { font-size: 15px; font-weight: 700; }
+    .org-node .node-sub { font-size: 11px; color: #a0c0e0; margin-top: 2px; }
+    .org-node.gold { background: linear-gradient(135deg, #c87010, #e8a020); }
+    .org-node.green { background: var(--accent2); }
+    .org-arrow {
+      font-size: 24px;
+      color: var(--accent);
+      padding: 0 10px;
+      font-weight: 700;
+    }
+
+    /* ── 底部縮圖列 ── */
+    #thumb-bar {
+      background: #0a1628;
+      border-top: 1px solid #1d3256;
+      padding: 8px 16px;
+      overflow-x: auto;
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .thumb {
+      flex-shrink: 0;
+      width: 100px;
+      height: 60px;
+      background: #1a3456;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #7090b0;
+      text-align: center;
+      padding: 4px;
+      line-height: 1.3;
+      transition: all .2s;
+      overflow: hidden;
+    }
+    .thumb:hover { border-color: #3a6090; color: #c0d8f0; }
+    .thumb.active { border-color: var(--accent); color: var(--accent); }
+
+    /* 進度條 */
+    #progress-bar {
+      height: 3px;
+      background: rgba(255,255,255,.08);
+      position: relative;
+    }
+    #progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width .3s ease;
+    }
+
+    /* 鍵盤提示 */
+    #key-hint {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: rgba(0,0,0,.7);
+      color: #8aaac8;
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+    #key-hint.show { opacity: 1; }
+
+    /* 雙欄佈局 */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* 薪酬比較卡 */
+    .rank-card {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .rank-card .rank-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rank-card .rank-header .max-badge {
+      font-size: 11px;
+      background: rgba(255,255,255,.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .rank-card .data-table th { border-radius: 0; }
+    .rank-card.gold .rank-header { background: linear-gradient(135deg, #b06010, #d08020); }
+    .rank-card.teal .rank-header { background: #1a6050; }
+    .rank-card.purple .rank-header { background: #4a2080; }
+
+    .note-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #78350f;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 頂部工具列 -->
+<div id="toolbar">
+  <div class="logo">幸福自在傢俱租賃股份有限公司</div>
+  <div class="controls">
+    <button id="btn-prev">◀ 上一頁</button>
+    <span id="slide-counter">1 / 20</span>
+    <button id="btn-next">下一頁 ▶</button>
+  </div>
+</div>
+
+<!-- 進度條 -->
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- 主舞台 -->
+<div id="stage">
+  <div id="slides-wrapper">
+
+    <!-- ── S01 封面 ── -->
+    <div class="slide active" id="slide-cover" data-label="封面">
+      <div class="cover-logo">Happiness &amp; Comfort Furniture Leasing Co., Ltd.</div>
+      <h1>各職級晉升與<span>薪酬制度</span></h1>
+      <div class="cover-sub">業務組織架構 · 獎金辦法 · 晉升考核 · 菁英計劃</div>
+      <div class="cover-pills">
+        <span class="cover-pill">業務同仁獎金</span>
+        <span class="cover-pill">各職級晉升</span>
+        <span class="cover-pill">主管津貼</span>
+        <span class="cover-pill">增員制度</span>
+        <span class="cover-pill">菁英計劃</span>
+      </div>
+    </div>
+
+    <!-- ── S02 目錄 ── -->
+    <div class="slide" data-label="目錄">
+      <span class="slide-tag">目錄</span>
+      <h2 class="slide-title">制度架構總覽</h2>
+      <div class="divider"></div>
+      <div class="toc-grid">
+        <div class="toc-item"><div class="toc-num">壹</div><div class="toc-text"><div class="toc-title">業務支給及獎金項目</div><div class="toc-desc">佣金、實動津貼、半年獎金、年終、增員</div></div></div>
+        <div class="toc-item"><div class="toc-num">貳</div><div class="toc-text"><div class="toc-title">各職級月業績獎金</div><div class="toc-desc">主任、襄理、店長、督導各級比例</div></div></div>
+        <div class="toc-item"><div class="toc-num">參</div><div class="toc-text"><div class="toc-title">主管津貼</div><div class="toc-desc">DT.FYC 對應主管津貼級距</div></div></div>
+        <div class="toc-item"><div class="toc-num">肆</div><div class="toc-text"><div class="toc-title">增員獎金（主管適用）</div><div class="toc-desc">各職級增員獎金計算辦法</div></div></div>
+        <div class="toc-item"><div class="toc-num">伍</div><div class="toc-text"><div class="toc-title">晉升條件</div><div class="toc-desc">業績、出勤、組織人力門檻</div></div></div>
+        <div class="toc-item"><div class="toc-num">陸</div><div class="toc-text"><div class="toc-title">考核制度</div><div class="toc-desc">考核標準、調降級制度</div></div></div>
+        <div class="toc-item"><div class="toc-num">柒</div><div class="toc-text"><div class="toc-title">業務督導管理與考核</div><div class="toc-desc">晉升條件、考核辦法、復職制度</div></div></div>
+        <div class="toc-item"><div class="toc-num">捌</div><div class="toc-text"><div class="toc-title">菁英計劃財務獎金</div><div class="toc-desc">達標獎金、定著獎金、增員獎金</div></div></div>
+      </div>
+    </div>
+
+    <!-- ── S03 組織架構 ── -->
+    <div class="slide" data-label="組織架構">
+      <span class="slide-tag">貳 — 一</span>
+      <h2 class="slide-title">組織架構與職級</h2>
+      <div class="divider"></div>
+      <div class="org-chart">
+        <div class="org-node"><div class="node-title">承攬業務員</div><div class="node-sub">業務專員</div></div>
+        <div class="org-arrow">→</div>
+        <div class="org-node gold"><div class="node-title">業務主任</div><div class="node-sub">FYC 20 萬</div></div>
+        <div class="org-arrow">→</div>
+        <div class="org-node gold"><div class="node-title">業務襄理</div><div class="node-sub">FYC 35 萬</div></div>
+        <div class="org-arrow">→</div>
+        <div class="org-node gold"><div class="node-title">業務店長</div><div class="node-sub">FYC 55 萬</div></div>
+        <div class="org-arrow">→</div>
+        <div class="org-node green"><div class="node-title">業務督導</div><div class="node-sub">區單位 FYC 420 萬</div></div>
+      </div>
+      <div class="info-grid col2" style="margin-top:16px;">
+        <div class="info-card"><div class="card-label">主管獎金共有四項</div><div class="card-desc" style="font-size:14px;color:var(--text);line-height:2;">① 每月單位輔導獎金<br>② 每月業績獎金<br>③ 年度單位輔導達成獎金<br>④ 年度直轄單位達成獎金</div></div>
+        <div class="info-card gold"><div class="card-label">發放對象（壹～伍）</div><div class="card-desc" style="font-size:14px;color:var(--text);line-height:2;">・承攬業務員<br>・業務主管（主任/襄理/店長）<br>・營業處主管（督導）</div></div>
+      </div>
+    </div>
+
+    <!-- ── S04 基礎佣金率 ── -->
+    <div class="slide" data-label="基礎佣金率">
+      <span class="slide-tag">壹 — 一</span>
+      <h2 class="slide-title">基礎佣金率</h2>
+      <div class="divider"></div>
+      <div class="info-grid col3" style="margin-bottom:24px;">
+        <div class="info-card gold">
+          <div class="card-label">佣金率</div>
+          <div class="card-value gold">5%</div>
+          <div class="card-desc">當月所租賃傢俱的租金總和</div>
+        </div>
+        <div class="info-card">
+          <div class="card-label">發放時間</div>
+          <div class="card-value" style="font-size:18px;">隔月 20 日</div>
+          <div class="card-desc">固定月結發放</div>
+        </div>
+        <div class="info-card green">
+          <div class="card-label">發放對象</div>
+          <div class="card-value green" style="font-size:15px;line-height:1.4;">業務員<br>業務主管<br>營業處主管</div>
+        </div>
+      </div>
+      <div class="note-box">
+        <strong>計算公式：</strong>當月租賃傢俱租金總和 × <strong>5%</strong> = 當月佣金
+      </div>
+    </div>
+
+    <!-- ── S05 實動津貼 ── -->
+    <div class="slide" data-label="實動津貼">
+      <span class="slide-tag">壹 — 二</span>
+      <h2 class="slide-title">實動津貼</h2>
+      <div class="divider"></div>
+      <div class="note-box" style="margin-bottom:20px;background:#e8f5e9;border-color:#a5d6a7;border-left-color:var(--accent2);color:#1b5e20;">
+        <strong>前提條件：</strong>當月出傢率 ≥ <strong>70%</strong>，且符合積實個人 FYC 業績門檻
+      </div>
+      <table class="data-table">
+        <thead><tr><th>當月積實個人 FYC 業績</th><th>實動津貼</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>≥ 5,400 元 且 &lt; 18,000 元</td><td><span class="badge amber">+ 1,000 元</span></td><td>補發較低檔實動津貼</td></tr>
+          <tr class="highlight"><td>≥ 18,000 元</td><td><span class="badge green">+ 2,000 元</span></td><td>補發較高檔實動津貼</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── S06 半年業績獎金 ── -->
+    <div class="slide" data-label="半年業績獎金">
+      <span class="slide-tag">壹 — 三</span>
+      <h2 class="slide-title">半年業績獎金</h2>
+      <div class="divider"></div>
+      <div class="two-col" style="gap:20px;">
+        <div>
+          <div class="section-label">門檻條件</div>
+          <ul class="bullet-list">
+            <li>六個月個人積實 FYC ≥ <strong>48,000</strong></li>
+            <li>六個月出傢率平均 ≥ <strong>70%</strong></li>
+            <li>計算期間：4～9 月 / 10～3 月</li>
+            <li>發放：績效評量期隔月 20 日</li>
+          </ul>
+          <div class="note-box" style="margin-top:14px;">
+            <strong>公式：</strong>六個月積實 FYC × 獎金比例
+          </div>
+        </div>
+        <div>
+          <div class="section-label">獎金比例級距</div>
+          <table class="data-table">
+            <thead><tr><th>六個月積實 FYC</th><th>比例</th></tr></thead>
+            <tbody>
+              <tr><td>48,000 ~ 79,999</td><td><span class="badge blue">10%</span></td></tr>
+              <tr><td>80,000 ~ 199,999</td><td><span class="badge blue">15%</span></td></tr>
+              <tr><td>200,000 ~ 319,999</td><td><span class="badge amber">25%</span></td></tr>
+              <tr><td>320,000 ~ 539,999</td><td><span class="badge amber">35%</span></td></tr>
+              <tr class="highlight"><td>540,000 以上</td><td><span class="badge green">50%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S07 FYC 年終獎金 ── -->
+    <div class="slide" data-label="FYC 年終獎金">
+      <span class="slide-tag">壹 — 四</span>
+      <h2 class="slide-title">FYC 年終獎金</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div>
+          <div class="section-label">計算條件</div>
+          <ul class="bullet-list">
+            <li>結算期間：<strong>1/1 ～ 12/31</strong></li>
+            <li>每月平均出傢率 ≥ <strong>70%</strong></li>
+            <li>公式：年度累計積實 FYC × 獎金比例</li>
+          </ul>
+          <div class="note-box" style="margin-top:14px;font-size:12px;">
+            <strong>未滿一年者：</strong><br>
+            • 任職 ≥ 6 個月：實際 FYC ÷ 任職月數 × 12 對應級距<br>
+            • 任職 &lt; 6 個月：實際 FYC ÷ 6 × 12 對應級距
+          </div>
+        </div>
+        <div>
+          <div class="section-label">年終獎金級距</div>
+          <table class="data-table" style="font-size:13px;">
+            <thead><tr><th>年度累計積實 FYC</th><th>比例</th></tr></thead>
+            <tbody>
+              <tr><td>48,000 ~ 59,999</td><td>4%</td></tr>
+              <tr><td>60,000 ~ 119,999</td><td>6%</td></tr>
+              <tr><td>120,000 ~ 179,999</td><td>8%</td></tr>
+              <tr><td>180,000 ~ 239,999</td><td>10%</td></tr>
+              <tr><td>240,000 ~ 359,999</td><td>12%</td></tr>
+              <tr><td>360,000 ~ 479,999</td><td>14%</td></tr>
+              <tr><td>480,000 ~ 599,999</td><td>16%</td></tr>
+              <tr><td>600,000 ~ 899,999</td><td>18%</td></tr>
+              <tr class="highlight"><td>900,000 以上</td><td><span class="badge green">25%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S08 增員獎勵（業務員） ── -->
+    <div class="slide" data-label="增員獎勵">
+      <span class="slide-tag">壹 — 五</span>
+      <h2 class="slide-title">增員獎勵辦法（業務員適用）</h2>
+      <div class="divider"></div>
+      <div class="info-grid col3" style="margin-bottom:20px;">
+        <div class="info-card gold"><div class="card-label">增員獎勵期間</div><div class="card-value gold" style="font-size:18px;">一 年</div><div class="card-desc">自被增員者報聘業務專員職級起算</div></div>
+        <div class="info-card"><div class="card-label">業績門檻</div><div class="card-value" style="font-size:18px;">36,000</div><div class="card-desc">當期同三個月積實個人 FYC</div></div>
+        <div class="info-card green"><div class="card-label">增員獎金</div><div class="card-value green">3,000 元</div><div class="card-desc">每達標一次發放</div></div>
+      </div>
+      <ul class="bullet-list">
+        <li>被增員者出傢率須平均達 <strong>70%</strong> 以上</li>
+        <li>增員者於獎金計算期間須在職且符合發放對象職級</li>
+        <li>增員者與被增員者原則上應歸屬<strong>同一營業處</strong></li>
+        <li>增員獎金核發對象以報聘文件上所載「介紹人」為準</li>
+        <li>被增員者晉升業務主任時，增員者仍可繼續適用增員獎勵</li>
+      </ul>
+    </div>
+
+    <!-- ── S09 各職級月業績獎金（主任/襄理） ── -->
+    <div class="slide" data-label="月業績獎金①">
+      <span class="slide-tag">貳 — 三</span>
+      <h2 class="slide-title">各職級每月業績獎金（上）</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div class="rank-card">
+          <div class="rank-header">業務主任 <span class="max-badge">DT.FYC 上限 21%</span></div>
+          <table class="data-table">
+            <thead><tr><th>每月業績獎金級距</th><th>比例</th></tr></thead>
+            <tbody>
+              <tr><td>0 ~ 17,999</td><td>0%</td></tr>
+              <tr><td>18,000 ~ 29,999</td><td>5%</td></tr>
+              <tr><td>30,000 ~ 44,999</td><td>9%</td></tr>
+              <tr><td>45,000 ~ 59,999</td><td>15%</td></tr>
+              <tr class="highlight"><td>60,000 ~ 74,999</td><td>21%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="rank-card gold">
+          <div class="rank-header">業務襄理 <span class="max-badge">DT.FYC 上限 23%</span></div>
+          <table class="data-table">
+            <thead><tr><th>每月業績獎金級距</th><th>比例</th></tr></thead>
+            <tbody>
+              <tr><td>0 ~ 17,999</td><td>0%</td></tr>
+              <tr><td>18,000 ~ 29,999</td><td>5%</td></tr>
+              <tr><td>30,000 ~ 44,999</td><td>9%</td></tr>
+              <tr><td>45,000 ~ 59,999</td><td>15%</td></tr>
+              <tr><td>60,000 ~ 74,999</td><td>21%</td></tr>
+              <tr class="highlight"><td>75,000 以上</td><td>23%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S10 各職級月業績獎金（店長/督導） ── -->
+    <div class="slide" data-label="月業績獎金②">
+      <span class="slide-tag">貳 — 三</span>
+      <h2 class="slide-title">各職級每月業績獎金（下）</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div class="rank-card teal">
+          <div class="rank-header">業務店長 <span class="max-badge">DT.FYC 上限 27%</span></div>
+          <table class="data-table">
+            <thead><tr><th>每月業績獎金級距</th><th>比例</th></tr></thead>
+            <tbody>
+              <tr><td>0 ~ 17,999</td><td>0%</td></tr>
+              <tr><td>18,000 ~ 29,999</td><td>5%</td></tr>
+              <tr><td>30,000 ~ 44,999</td><td>9%</td></tr>
+              <tr><td>45,000 ~ 59,999</td><td>15%</td></tr>
+              <tr><td>60,000 ~ 74,999</td><td>21%</td></tr>
+              <tr class="highlight"><td>75,000 以上</td><td>27%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="rank-card purple">
+          <div class="rank-header">業務督導 <span class="max-badge">DT.FYC 上限 29%</span></div>
+          <table class="data-table">
+            <thead><tr><th>每月業績獎金級距</th><th>比例</th></tr></thead>
+            <tbody>
+              <tr><td>0 ~ 17,999</td><td>0%</td></tr>
+              <tr><td>18,000 ~ 29,999</td><td>5%</td></tr>
+              <tr><td>45,000 ~ 59,999</td><td>17%</td></tr>
+              <tr><td>60,000 ~ 74,999</td><td>23%</td></tr>
+              <tr class="highlight"><td>75,000 以上</td><td>29%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S11 店長區域單位達成月獎金 ── -->
+    <div class="slide" data-label="店長區域獎金">
+      <span class="slide-tag">貳 — 四</span>
+      <h2 class="slide-title">業務店長 — 區域單位達成月獎金</h2>
+      <div class="divider"></div>
+      <div class="two-col" style="align-items:start;">
+        <div>
+          <div class="section-label">核算期間</div>
+          <div class="info-grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+            <div class="info-card" style="padding:10px 14px;"><div class="card-label">第一期</div><div style="font-size:13px;color:var(--text);font-weight:600;">1 ~ 3 月</div></div>
+            <div class="info-card" style="padding:10px 14px;"><div class="card-label">第二期</div><div style="font-size:13px;color:var(--text);font-weight:600;">4 ~ 6 月</div></div>
+            <div class="info-card" style="padding:10px 14px;"><div class="card-label">第三期</div><div style="font-size:13px;color:var(--text);font-weight:600;">7 ~ 9 月</div></div>
+            <div class="info-card" style="padding:10px 14px;"><div class="card-label">第四期</div><div style="font-size:13px;color:var(--text);font-weight:600;">10 ~ 12 月</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">每季區單位 FYC 比例</div>
+          <table class="data-table">
+            <thead><tr><th>每季區單位 FYC</th><th>獎金比例</th></tr></thead>
+            <tbody>
+              <tr><td>40,000 ~ 599,999</td><td><span class="badge blue">2%</span></td></tr>
+              <tr><td>600,000 ~ 999,000</td><td><span class="badge amber">3%</span></td></tr>
+              <tr class="highlight"><td>1,000,000 以上</td><td><span class="badge green">4%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S12 督導區單位達成月獎金 ── -->
+    <div class="slide" data-label="督導區單位獎金">
+      <span class="slide-tag">貳 — 五</span>
+      <h2 class="slide-title">業務督導 — 區單位達成月獎金</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div>
+          <div class="section-label">越級區單位 FYC 比例</div>
+          <table class="data-table">
+            <thead><tr><th>越級區單位 FYC</th><th>比例</th></tr></thead>
+            <tbody>
+              <tr><td>0 ~ 399,999</td><td><span class="badge blue">4%</span></td></tr>
+              <tr><td>400,000 ~ 999,999</td><td><span class="badge amber">5%</span></td></tr>
+              <tr class="highlight"><td>1,000,000 以上</td><td><span class="badge green">6%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="section-label">子處業績回算比例</div>
+          <table class="data-table">
+            <thead><tr><th>回計期間</th><th>回計比例</th></tr></thead>
+            <tbody>
+              <tr><td>第一年</td><td><span class="badge green">120%</span></td></tr>
+              <tr><td>第二年</td><td><span class="badge blue">100%</span></td></tr>
+              <tr><td>第三年</td><td><span class="badge amber">70%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S13 主管津貼（主任/襄理/店長） ── -->
+    <div class="slide" data-label="主管津貼①">
+      <span class="slide-tag">參 — 一</span>
+      <h2 class="slide-title">主管津貼 — 業務主任 / 業務襄理 / 業務店長</h2>
+      <div class="divider"></div>
+      <table class="data-table" style="font-size:13px;">
+        <thead>
+          <tr><th>直轄單位 DT.FYC</th><th>業務主任</th><th>業務襄理</th><th>業務店長</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>18,000 ~ 21,999</td><td>4,000</td><td>4,500</td><td>5,000</td></tr>
+          <tr><td>26,000 ~ 37,999</td><td>7,000</td><td>8,500</td><td>9,000</td></tr>
+          <tr><td>38,000 ~ 45,999</td><td>7,500</td><td>10,500</td><td>11,500</td></tr>
+          <tr><td>46,000 ~ 53,999</td><td>10,000</td><td>—</td><td>—</td></tr>
+          <tr><td>54,000 ~ 65,999</td><td>—</td><td>13,000</td><td>15,000</td></tr>
+          <tr><td>66,000 ~ 77,999</td><td>12,000</td><td>—</td><td>—</td></tr>
+          <tr><td>78,000 ~ 89,999</td><td>—</td><td>15,500</td><td>—</td></tr>
+          <tr><td>90,000 ~ 119,999</td><td>14,000</td><td>17,500</td><td>18,000</td></tr>
+          <tr><td>130,000 ~ 144,999</td><td>—</td><td>—</td><td>23,500</td></tr>
+          <tr><td>145,000 ~ 159,999</td><td>16,000</td><td>19,000</td><td>—</td></tr>
+          <tr><td>160,000 ~ 174,999</td><td>—</td><td>—</td><td>25,500</td></tr>
+          <tr><td>175,000 ~ 191,999</td><td>16,800</td><td>21,000</td><td>25,500</td></tr>
+          <tr><td>208,000 ~ 231,999</td><td>17,500</td><td>22,500</td><td>—</td></tr>
+          <tr><td>232,000 ~ 271,999</td><td>—</td><td>25,000</td><td>29,000</td></tr>
+          <tr><td>272,000 ~ 299,999</td><td>19,500</td><td>26,500</td><td>31,000</td></tr>
+          <tr class="highlight"><td>320,000 以上</td><td>—</td><td>—</td><td>33,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── S14 業務督導主管津貼 ── -->
+    <div class="slide" data-label="督導主管津貼">
+      <span class="slide-tag">參 — 二</span>
+      <h2 class="slide-title">業務督導直屬組業績獎金（主管津貼）</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div>
+          <table class="data-table">
+            <thead><tr><th>直轄單位 DTFYC</th><th>業務督導</th></tr></thead>
+            <tbody>
+              <tr><td>16,000 ~ 23,999</td><td>5,500</td></tr>
+              <tr><td>24,000 ~ 35,999</td><td>10,000</td></tr>
+              <tr><td>36,000 ~ 51,999</td><td>12,500</td></tr>
+              <tr><td>52,000 ~ 75,999</td><td>15,500</td></tr>
+              <tr><td>76,000 ~ 87,999</td><td>18,500</td></tr>
+              <tr><td>88,000 ~ 132,999</td><td>21,500</td></tr>
+              <tr><td>133,000 ~ 159,999</td><td>24,000</td></tr>
+              <tr><td>160,000 ~ 191,999</td><td>26,000</td></tr>
+              <tr><td>192,000 ~ 207,999</td><td>27,500</td></tr>
+              <tr><td>232,000 ~ 271,999</td><td>29,500</td></tr>
+              <tr><td>272,000 ~ 299,999</td><td>32,000</td></tr>
+              <tr class="highlight"><td>300,000 以上</td><td>35,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="note-box" style="background:#eef3fa;border-color:#b0c8e8;border-left-color:var(--primary);color:var(--primary);">
+            <strong>額外組別獎金：</strong><br><br>
+            營業處單位內之各組，每組當月積實 DT.FYC ≥ <strong>25,000</strong> 者：<br><br>
+            <span style="font-size:18px;font-weight:800;">每組 DT.FYC × 3%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S15 增員獎金（主管） ── -->
+    <div class="slide" data-label="主管增員獎金">
+      <span class="slide-tag">肆</span>
+      <h2 class="slide-title">增員獎金（主管適用）</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div>
+          <div class="section-label">業務主任 / 業務襄理 / 業務店長</div>
+          <table class="data-table">
+            <thead><tr><th>期間</th><th>FYC 門檻</th><th>增員獎金</th></tr></thead>
+            <tbody>
+              <tr><td>第 1 ~ 3 個月</td><td>30,000</td><td>$3,000</td></tr>
+              <tr><td>第 4 ~ 6 個月</td><td>30,000</td><td>$3,000</td></tr>
+              <tr><td>第 7 ~ 9 個月</td><td>30,000</td><td>$3,000</td></tr>
+              <tr><td>第 10 ~ 12 個月</td><td>30,000</td><td>$3,000</td></tr>
+              <tr class="highlight"><td>12 個月內晉升主任</td><td>—</td><td>輔導晉升獎 $12,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="section-label">業務督導</div>
+          <table class="data-table">
+            <thead><tr><th>期間</th><th>FYC 門檻</th><th>增員獎金</th></tr></thead>
+            <tbody>
+              <tr class="highlight"><td>第 1 ~ 3 個月</td><td><strong>36,000</strong></td><td>$3,000</td></tr>
+              <tr><td>第 4 ~ 6 個月</td><td>30,000</td><td>$3,000</td></tr>
+              <tr><td>第 7 ~ 9 個月</td><td>30,000</td><td>$3,000</td></tr>
+              <tr><td>第 10 ~ 12 個月</td><td>30,000</td><td>$3,000</td></tr>
+              <tr class="highlight"><td>12 個月內晉升主任</td><td>—</td><td>輔導晉升獎 $12,000</td></tr>
+            </tbody>
+          </table>
+          <div class="note-box" style="margin-top:10px;font-size:12px;">督導第一階段 FYC 門檻較高（36,000 vs 30,000）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S16 晉升條件 ── -->
+    <div class="slide" data-label="晉升條件">
+      <span class="slide-tag">伍</span>
+      <h2 class="slide-title">晉升條件</h2>
+      <div class="divider"></div>
+      <table class="data-table" style="margin-bottom:16px;">
+        <thead><tr><th>項目</th><th>業務主任</th><th>業務襄理</th><th>業務店長</th></tr></thead>
+        <tbody>
+          <tr><td>晉升前年資</td><td>1 個月</td><td>2 個月</td><td>3 個月</td></tr>
+          <tr><td>業績產生月份</td><td colspan="3" style="text-align:center;">晉升前每個月均須有業績（半年計算）</td></tr>
+          <tr><td>FYC / DT.FYC</td><td><span class="badge amber">20 萬</span></td><td><span class="badge amber">35 萬</span></td><td><span class="badge green">55 萬</span></td></tr>
+          <tr><td>出勤率</td><td colspan="3" style="text-align:center;">≥ 75%（半年計算）</td></tr>
+          <tr><td>組織人力</td><td>直轄單位一組<br>直轄業務員三位</td><td>直轄單位三組</td><td>直轄單位三組<br>直轄業務員三人</td></tr>
+          <tr class="highlight"><td>任用評核期</td><td colspan="3" style="text-align:center;">三個月</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box" style="font-size:12px;">
+        <strong>注意：</strong>晉升後業績級距 FYC/DT.FYC 需重新計算至下一職級晉升前。FYC/DT.FYC 均累計一年，超過一年者超額不予列入晉升業績。
+      </div>
+    </div>
+
+    <!-- ── S17 考核制度 ── -->
+    <div class="slide" data-label="考核制度">
+      <span class="slide-tag">陸</span>
+      <h2 class="slide-title">考核制度</h2>
+      <div class="divider"></div>
+      <div class="two-col">
+        <div>
+          <div class="section-label">各職級考核標準</div>
+          <table class="data-table" style="font-size:13px;">
+            <thead><tr><th>職級</th><th>考核期間</th><th>FYC 門檻</th></tr></thead>
+            <tbody>
+              <tr><td>業務員</td><td>三個月</td><td>3,000</td></tr>
+              <tr><td>業務主任</td><td>B 考：三個月<br>A 考：六個月</td><td>4 萬 / 8 萬</td></tr>
+              <tr><td>業務襄理</td><td>B 考：三個月<br>A 考：六個月</td><td>4 萬 / 8 萬</td></tr>
+              <tr><td>業務店長</td><td>B 考：三個月<br>A 考：六個月</td><td>4 萬 / 8 萬</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="section-label">調降級制度</div>
+          <table class="data-table" style="font-size:12px;">
+            <thead><tr><th>項目</th><th>1~3 月內</th><th>4~6 月內</th><th>7 月後</th></tr></thead>
+            <tbody>
+              <tr><td>FYC 門檻</td><td colspan="3" style="text-align:center;">主任/襄理 2 萬 / 店長 4 萬</td></tr>
+              <tr><td>組織人力</td><td>回歸</td><td>不回歸</td><td>不論職級</td></tr>
+              <tr><td>勞基年資</td><td>年資保留</td><td>年資歸清</td><td>重新計算</td></tr>
+              <tr class="highlight"><td>任用評核</td><td colspan="3" style="text-align:center;">三個月（B 考核）</td></tr>
+            </tbody>
+          </table>
+          <div class="note-box" style="margin-top:10px;font-size:12px;">
+            一個職位僅限降兩次，超過則須<strong>重新晉升</strong>。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S18 業務督導晉升 ── -->
+    <div class="slide" data-label="督導晉升">
+      <span class="slide-tag">柒 — 一</span>
+      <h2 class="slide-title">業務督導 — 晉升條件</h2>
+      <div class="divider"></div>
+      <div class="info-grid col3" style="margin-bottom:20px;">
+        <div class="info-card gold"><div class="card-label">晉升年資</div><div class="card-value gold">6 個月</div><div class="card-desc">晉升前半年每月均須有業績</div></div>
+        <div class="info-card"><div class="card-label">區單位 FYC</div><div class="card-value" style="font-size:20px;">420 萬</div><div class="card-desc">累計達標</div></div>
+        <div class="info-card green"><div class="card-label">出勤率</div><div class="card-value green">70%</div></div>
+      </div>
+      <div class="info-grid col2">
+        <div class="info-card"><div class="card-label">組織人力需求</div><div class="card-desc" style="font-size:14px;color:var(--text);line-height:2;">・直轄單位含 <strong>15 組</strong><br>・營業處人員共 <strong>27 人</strong></div></div>
+        <div class="info-card gold"><div class="card-label">考核辦法</div><div class="card-desc" style="font-size:13px;color:var(--text);line-height:1.8;">每年半年核一次，計算每人平均貢獻額。連續兩個半年考核排名後 <strong>10%</strong> 者，業務督導降為業務員。</div></div>
+      </div>
+    </div>
+
+    <!-- ── S19 督導復職 ── -->
+    <div class="slide" data-label="督導復職">
+      <span class="slide-tag">柒 — 四</span>
+      <h2 class="slide-title">業務督導 — 復職制度</h2>
+      <div class="divider"></div>
+      <table class="data-table" style="margin-bottom:16px;">
+        <thead><tr><th>項目</th><th>1~3 個月內</th><th>4~6 個月內</th><th>7 個月後</th></tr></thead>
+        <tbody>
+          <tr><td>FYC 門檻</td><td>12 萬</td><td>—</td><td>—</td></tr>
+          <tr><td>組織人力</td><td>回歸</td><td>不回歸</td><td>—</td></tr>
+          <tr><td>勞基年資</td><td>年資保留</td><td>年資歸清</td><td>重新晉升</td></tr>
+          <tr class="highlight"><td>任用評核</td><td>三個月（B 考核）</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box">
+        <strong>第 3 個月復職條件（不含第一階段期間）：</strong><br>
+        區單位 FYC 達 <strong>80 萬</strong>，營業處共 <strong>12 組</strong>直轄單位，所屬人員共 <strong>27 人</strong>。
+      </div>
+    </div>
+
+    <!-- ── S20 菁英計劃 ── -->
+    <div class="slide" data-label="菁英計劃">
+      <span class="slide-tag gold">捌</span>
+      <h2 class="slide-title">菁英計劃財務獎金</h2>
+      <div class="divider"></div>
+      <div class="info-grid col3" style="margin-bottom:20px;">
+        <div class="info-card gold">
+          <div class="card-label">① 達標獎金</div>
+          <div class="card-value gold" style="font-size:18px;">每季每 5.4 萬 FYC</div>
+          <div class="card-desc">達標發放 <strong>1.2 萬元</strong>，以每 5.4 萬為一單位</div>
+        </div>
+        <div class="info-card green">
+          <div class="card-label">② 定著獎金</div>
+          <div class="card-value green" style="font-size:18px;">第 13 個月</div>
+          <div class="card-desc">第 1~12 月所領達標獎金的<strong>總和一份</strong>再發放</div>
+        </div>
+        <div class="info-card">
+          <div class="card-label">③ 增員獎金</div>
+          <div class="card-value" style="font-size:18px;">30% / 60%</div>
+          <div class="card-desc">介紹人 or 直轄主管各得 30%；同一人得 60%</div>
+        </div>
+      </div>
+      <div class="note-box" style="font-size:13px;">
+        <strong>計算公式：</strong><br>
+        ・介紹人：（達標獎金 + 定著獎金）× <strong>30%</strong><br>
+        ・直轄單位業務主管：（達標獎金 + 定著獎金）× <strong>30%</strong><br>
+        ・介紹人 = 直轄單位業務主管（同一人）：（達標獎金 + 定著獎金）× <strong>60%</strong><br><br>
+        <strong>停發條件：</strong>未達月出勤率 70%、違反業務推行管理規則或相關營業政策。
+      </div>
+    </div>
+
+  </div><!-- /slides-wrapper -->
+</div><!-- /stage -->
+
+<!-- 縮圖列 -->
+<div id="thumb-bar"></div>
+
+<!-- 鍵盤提示 -->
+<div id="key-hint">← → 鍵換頁</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let current = 0;
+
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const counter = document.getElementById('slide-counter');
+  const progressFill = document.getElementById('progress-fill');
+  const thumbBar = document.getElementById('thumb-bar');
+  const keyHint = document.getElementById('key-hint');
+
+  // 建立縮圖
+  slides.forEach((slide, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb' + (i === 0 ? ' active' : '');
+    thumb.textContent = (i + 1) + '. ' + (slide.dataset.label || '');
+    thumb.addEventListener('click', () => goTo(i));
+    thumbBar.appendChild(thumb);
+  });
+
+  function goTo(index) {
+    if (index < 0 || index >= totalSlides) return;
+    slides[current].classList.remove('active');
+    thumbBar.children[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    thumbBar.children[current].classList.add('active');
+    thumbBar.children[current].scrollIntoView({ block: 'nearest', inline: 'center' });
+    counter.textContent = (current + 1) + ' / ' + totalSlides;
+    progressFill.style.width = ((current + 1) / totalSlides * 100) + '%';
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === totalSlides - 1;
+  }
+
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+  });
+
+  // 初始化
+  goTo(0);
+
+  // 顯示鍵盤提示
+  setTimeout(() => { keyHint.classList.add('show'); }, 800);
+  setTimeout(() => { keyHint.classList.remove('show'); }, 3500);
+</script>
+
+</body>
+</html>
