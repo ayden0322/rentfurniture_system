@@ -14,7 +14,8 @@
       --muted: #6b7a8d;
       --border: #dce3ec;
       --white: #ffffff;
-      --slide-w: 1200px;
+      --slide-w: 1280px;
+      --slide-h: 720px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -77,23 +78,28 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 20px;
+      padding: 16px;
+      position: relative;
     }
 
-    /* ── 投影片容器 ── */
+    /* ── 投影片容器（固定 16:9，自動縮放） ── */
     #slides-wrapper {
-      width: 100%;
-      max-width: var(--slide-w);
+      width: var(--slide-w);
+      height: var(--slide-h);
       position: relative;
+      transform-origin: center center;
     }
     .slide {
       display: none;
       background: var(--white);
       border-radius: 12px;
       box-shadow: 0 24px 64px rgba(0,0,0,.55);
-      padding: 52px 60px;
-      min-height: 580px;
-      position: relative;
+      padding: 48px 56px 56px;
+      width: var(--slide-w);
+      height: var(--slide-h);
+      position: absolute;
+      top: 0;
+      left: 0;
       overflow: hidden;
       animation: fadeIn .35s ease;
     }
@@ -116,10 +122,11 @@
     .slide::after {
       content: attr(data-label);
       position: absolute;
-      bottom: 18px; right: 28px;
+      bottom: 14px; right: 24px;
       font-size: 11px;
-      color: #aab8c8;
+      color: #c0ccdc;
       letter-spacing: 0.5px;
+      pointer-events: none;
     }
 
     /* ── 通用元素 ── */
@@ -192,6 +199,8 @@
       text-align: center;
       color: var(--text);
     }
+    .data-table.compact th,
+    .data-table.compact td { padding: 6px 12px; font-size: 12.5px; }
     .data-table tr:hover td { background: #f0f5fb; }
     .data-table tr:last-child td { border-bottom: none; }
     .data-table .highlight td {
@@ -328,13 +337,11 @@
     #slide-cover {
       background: linear-gradient(135deg, #0d2240 0%, #1a3a5c 50%, #0d2240 100%);
       color: #fff;
-      display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      min-height: 580px;
     }
+    #slide-cover.active { display: flex; }
     #slide-cover::before { background: linear-gradient(90deg, var(--accent) 0%, #f0b840 100%); }
     #slide-cover .cover-logo {
       font-size: 13px;
@@ -892,7 +899,7 @@
       <span class="slide-tag">參 — 一</span>
       <h2 class="slide-title">主管津貼 — 業務主任 / 業務襄理 / 業務店長</h2>
       <div class="divider"></div>
-      <table class="data-table" style="font-size:13px;">
+      <table class="data-table compact">
         <thead>
           <tr><th>直轄單位 DT.FYC</th><th>業務主任</th><th>業務襄理</th><th>業務店長</th></tr>
         </thead>
@@ -1126,12 +1133,26 @@
   const totalSlides = slides.length;
   let current = 0;
 
+  const stage = document.getElementById('stage');
+  const wrapper = document.getElementById('slides-wrapper');
   const btnPrev = document.getElementById('btn-prev');
   const btnNext = document.getElementById('btn-next');
   const counter = document.getElementById('slide-counter');
   const progressFill = document.getElementById('progress-fill');
   const thumbBar = document.getElementById('thumb-bar');
   const keyHint = document.getElementById('key-hint');
+
+  // ── 自動縮放：將 1280x720 投影片縮放以填滿 stage ──
+  const SLIDE_W = 1280;
+  const SLIDE_H = 720;
+  function fitSlide() {
+    const padding = 32; // stage padding 上下/左右各 16
+    const availW = stage.clientWidth - padding;
+    const availH = stage.clientHeight - padding;
+    const scale = Math.min(availW / SLIDE_W, availH / SLIDE_H);
+    wrapper.style.transform = `scale(${scale})`;
+  }
+  window.addEventListener('resize', fitSlide);
 
   // 建立縮圖
   slides.forEach((slide, i) => {
@@ -1165,6 +1186,7 @@
   });
 
   // 初始化
+  fitSlide();
   goTo(0);
 
   // 顯示鍵盤提示
